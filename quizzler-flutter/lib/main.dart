@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/quiz_brain.dart';
 
 void main() => runApp(Quizzler());
+
+QuizBrain brain = QuizBrain();
 
 class Quizzler extends StatelessWidget {
   @override
@@ -25,14 +28,6 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> scoreKeeper = [
-    Icon(
-      Icons.check,
-      color: Colors.green,
-    ),
-    Icon(Icons.close, color: Colors.red),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,7 +40,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                brain.getQuestion(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -69,7 +64,9 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked true.
+                setState(() {
+                  brain.updateScore(true);
+                });
               },
             ),
           ),
@@ -87,13 +84,15 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked false.
+                setState(() {
+                  brain.updateScore(false);
+                });
               },
             ),
           ),
         ),
         Row(
-          children: scoreKeeper,
+          children: brain.scoreKeeper,
         )
       ],
     );
@@ -101,7 +100,7 @@ class _QuizPageState extends State<QuizPage> {
 }
 
 /*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
+question1: , false,
+question2: , true,
+question3: , true,
 */
