@@ -1,6 +1,5 @@
 import 'package:bmi_calculator/constants.dart';
 import 'package:bmi_calculator/results_page.dart';
-import 'package:bmi_calculator/reusable_card.dart';
 import 'package:bmi_calculator/reusable_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,15 +16,16 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   Sex selected;
-  int height = 180;
-  int weight = 80;
-  int age = 25;
+  int calories = 1500;
+  int protein = 154;
+  int carbs = 35;
+  int fat = 84;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('BMI CALCULATOR'),
+        title: Text('KETO CALCULATOR'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -35,33 +35,58 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReusableCard(
-                    onTap: () {
-                      setState(() {
-                        selected = Sex.male;
-                      });
-                    },
-                    color: selected == Sex.male
-                        ? kSelectedCardColor
-                        : kNotSelectedCardColor,
-                    cardChild: ReusableIcon(
-                      iconData: FontAwesomeIcons.mars,
-                      text: 'MALE',
+                    color: kSelectedCardColor,
+                    cardChild: PlusMinusCard(
+                      value: protein,
+                      text: 'protein (g)',
+                      onPressAdd: () {
+                        setState(() {
+                          protein++;
+                        });
+                      },
+                      onPressSubtract: () {
+                        setState(() {
+                          protein--;
+                        });
+                      },
                     ),
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
-                    onTap: () {
-                      setState(() {
-                        selected = Sex.female;
-                      });
-                    },
-                    color: selected == Sex.female
-                        ? kSelectedCardColor
-                        : kNotSelectedCardColor,
-                    cardChild: ReusableIcon(
-                      iconData: FontAwesomeIcons.venus,
-                      text: 'FEMALE',
+                    color: kSelectedCardColor,
+                    cardChild: PlusMinusCard(
+                      value: carbs,
+                      text: 'carbs (g)',
+                      onPressAdd: () {
+                        setState(() {
+                          carbs++;
+                        });
+                      },
+                      onPressSubtract: () {
+                        setState(() {
+                          carbs--;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ReusableCard(
+                    color: kSelectedCardColor,
+                    cardChild: PlusMinusCard(
+                      value: fat,
+                      text: 'fat (g)',
+                      onPressAdd: () {
+                        setState(() {
+                          fat++;
+                        });
+                      },
+                      onPressSubtract: () {
+                        setState(() {
+                          fat--;
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -74,20 +99,17 @@ class _InputPageState extends State<InputPage> {
               cardChild: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'HEIGHT',
-                    style: kTextStyle,
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.ideographic,
                     children: [
                       Text(
-                        height.toString(),
+                        calories.toString(),
                         style: kNumberTextStyle,
                       ),
                       Text(
-                        'cm',
+                        'kCal',
                         style: kTextStyle,
                       )
                     ],
@@ -105,62 +127,18 @@ class _InputPageState extends State<InputPage> {
                       trackHeight: 1.0,
                     ),
                     child: Slider(
-                      value: height.toDouble(),
-                      min: 120.0,
-                      max: 400.0,
+                      value: calories.toDouble(),
+                      min: 1200.0,
+                      max: 3000.0,
                       onChanged: (value) {
                         setState(() {
-                          height = value.round();
+                          calories = value.round();
                         });
                       },
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: ReusableCard(
-                    color: kSelectedCardColor,
-                    cardChild: PlusMinusCard(
-                      value: weight,
-                      text: 'WEIGHT',
-                      onPressAdd: () {
-                        setState(() {
-                          weight++;
-                        });
-                      },
-                      onPressSubtract: () {
-                        setState(() {
-                          weight--;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ReusableCard(
-                    color: kSelectedCardColor,
-                    cardChild: PlusMinusCard(
-                      value: age,
-                      text: 'AGE',
-                      onPressAdd: () {
-                        setState(() {
-                          age++;
-                        });
-                      },
-                      onPressSubtract: () {
-                        setState(() {
-                          age--;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
           GestureDetector(
@@ -176,7 +154,7 @@ class _InputPageState extends State<InputPage> {
               padding: EdgeInsets.only(bottom: 20.0),
               width: double.infinity,
               height: kBottomContainerHeight,
-              child: Center(child: Text('CALCULATE', style: kBottomButtonText)),
+              child: Center(child: Text('New Day', style: kBottomButtonText)),
             ),
           ),
         ],
@@ -214,7 +192,7 @@ class PlusMinusCard extends StatelessWidget {
               onPressed: onPressSubtract,
             ),
             SizedBox(
-              width: 10.0,
+              width: 1.0,
             ),
             RoundIconButton(
               icon: FontAwesomeIcons.plus,
@@ -240,8 +218,8 @@ class RoundIconButton extends StatelessWidget {
       onPressed: onPressed,
       elevation: 6.0,
       constraints: BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
+        width: 38.0,
+        height: 38.0,
       ),
       shape: CircleBorder(),
       fillColor: Color(0xFF4C4F5E),
